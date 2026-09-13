@@ -1,0 +1,30 @@
+name: Deploy snapshot
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate deploy manifest
+        run: |
+          node -e "
+            const fs = require('fs');
+            const m = JSON.parse(fs.readFileSync('deploy/manifest.json','utf8'));
+            if (!m.app || !Array.isArray(m.routes)) throw new Error('Invalid manifest');
+            console.log('App:', m.app);
+            console.log('Deployed at:', m.deployedAt);
+            console.log('Routes:', m.routes.length);
+          "
+      - name: Publish snapshot artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-manifest
+          path: deploy/manifest.json
