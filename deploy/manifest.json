@@ -1,6 +1,6 @@
 {
   "app": "HaloSense workspace",
-  "deployedAt": "2026-09-13T03:59:52.089Z",
+  "deployedAt": "2026-09-13T04:13:43.771Z",
   "routeCount": 61,
   "routes": [
     "/src/routes/__root.tsx",
